@@ -14,8 +14,12 @@ const productSchema = new Schema({
         required: [true, "Vendor name is required"]
     },
     priceOfProduct: {
-        type: Number,
-        required: [true, "Price is required"]
+        type: [{
+            marketPrice: { type: Number, required: [true, "Market price is required"] },
+            discountPrice: { type: Number, required: [true, "Discount price is required"] },
+            priceAfterDiscount: { type: Number, required: [true, "Price after discount is required"] }
+        }],
+        required: true
     },
     ratingOfProduct: {
         type: [{

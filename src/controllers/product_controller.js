@@ -30,16 +30,11 @@ const ProductController = {
     updateOneProduct: async (req, res) => {
         const { id } = req.params;
         const {
-            productName,
-            brandName,
             marketPrice,
             discountPrice,
             priceAfterDiscount,
-            ratings,
             availability,
-            modelName,
             images,
-            category,
             productFeatures,
             description
         } = req.body;
@@ -49,16 +44,11 @@ const ProductController = {
                 id,
                 {
                     $set: {
-                        productName,
-                        brandName,
                         "price.marketPrice": marketPrice,
                         "price.discountPrice": discountPrice,
                         "price.priceAfterDiscount": priceAfterDiscount,
-                        ratings,
                         availability,
-                        modelName,
                         images,
-                        category,
                         productFeatures,
                         description
                     }
@@ -77,7 +67,6 @@ const ProductController = {
     },
     deleteOneProduct: async (req, res) => {
         const { id } = req.params;
-    
         try {
             const deletedProduct = await ProductModel.findByIdAndDelete(id);
     

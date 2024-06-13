@@ -21,9 +21,8 @@ const ProductController = {
     },
     fetchOneProduct: async function (req, res) {
         try {
-            const categoryId = req.params.id;
-            const products = await ProductModel.find({ category: categoryId });
-            return res.json({ status: true, data: products, message: "Fetched one product"});
+            const products = await ProductModel.findById(req.params.id);
+            return res.json({ status: true, data: products });
         } catch (e) {
             return res.json({ status: false, message: e });
         }

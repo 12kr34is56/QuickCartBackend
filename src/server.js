@@ -24,6 +24,10 @@ mongoose.connect(process.env.MONGO_URL)
 
 app.use("/api/product", ProductRoutes);
 app.use("/api/user", UserRoutes);
+
+const CategoryRouter = require("./routes/category_route");
+app.use("/api/category", CategoryRouter);
+
 app.get("/", function (req, res) {
     res.send("Server is workinng all fine");
 });

@@ -43,7 +43,8 @@ const productSchema = new Schema({
     category: {
         type: [Schema.Types.ObjectId],
         ref: 'Category',
-        required: [true, 'Category is required']
+        // required: [true, 'Category is required']
+        default : ""
     },
     productFeature: {
         type: [String],

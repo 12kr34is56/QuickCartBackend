@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 3005
 const app = express();
 const mongoose = require('mongoose');
-const { ProductRoutes } = require('./routes');
+const { ProductRoutes,UserRoutes } = require('./routes');
 
 app.use(helmet());
 app.use(morgan("dev"));
@@ -23,6 +23,7 @@ mongoose.connect(process.env.MONGO_URL)
 
 
 app.use("/api/product", ProductRoutes);
+app.use("/api/user", UserRoutes);
 app.get("/", function (req, res) {
     res.send("Server is workinng all fine");
 });

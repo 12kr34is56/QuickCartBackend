@@ -1,11 +1,11 @@
 const { Schema, model } = require('mongoose');
 
 const productSchema = new Schema({
-    nameOfProduct: {
+    productName: {
         type: String,
         required: [true, "Name is required"]
     },
-    brandOfProduct: {
+    brandName: {
         type: String,
         required: [true, "Brand is required"]
     },
@@ -13,22 +13,22 @@ const productSchema = new Schema({
         type: String,
         required: [true, "Vendor name is required"]
     },
-    priceOfProduct: {
-        type: [{
+    price: {
+        type: {
             marketPrice: { type: Number, required: [true, "Market price is required"] },
             discountPrice: { type: Number, required: [true, "Discount price is required"] },
             priceAfterDiscount: { type: Number, required: [true, "Price after discount is required"] }
-        }],
+        },
         required: true
     },
-    ratingOfProduct: {
+    ratings: {
         type: [{
             userId: { type: Schema.Types.ObjectId, ref: 'User' },
             rating: { type: Number, min: 1, max: 5 }
         }],
         default: []
     },
-    availabilityOfProduct: {
+    availability: {
         type: Number,
         required: [true, "Enter the quantity"]
     },
@@ -36,7 +36,7 @@ const productSchema = new Schema({
         type: String,
         required: [true, "Model name is required"]
     },
-    imageOfProduct: {
+    images: {
         type: [String],
         required: [true, "Image is required"]
     },
@@ -45,7 +45,7 @@ const productSchema = new Schema({
         ref: 'Category',
         required: [true, 'Category is required']
     },
-    productFeature: {
+    productFeatures: {
         type: [String],
         default: []
     },
@@ -61,16 +61,6 @@ const productSchema = new Schema({
         type: Date,
         default: Date.now
     }
-});
-
-// Pre-save hook to set `createdOn` and `updatedOn`
-productSchema.pre('save', function (next) {
-    const now = new Date();
-    this.updatedOn = now;
-    if (!this.createdOn) {
-        this.createdOn = now;
-    }
-    next();
 });
 
 // Pre-update hook to update `updatedOn`

@@ -10,11 +10,24 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: [true, "Email is required"],
+        unique: true,
         validate: [validator.isEmail, "Invalid email"]
     },
     phone: {
-        type: String,
-        required: [true, "Phone number is required"]
+        type: {
+            CountryCode: {
+                type: Number,
+                required: [true, "Country code is required"],
+                default: 91
+            },
+       number: {
+                type: String,
+                required: [true, "Phone number is required"],
+                minlength: [10, "Phone number must be 10 digits long"],
+                unique: true,
+                maxlength: [10, "Phone number must be 10 digits long"]
+            }
+        },
     },
     address:{
         city: {
@@ -29,12 +42,13 @@ const userSchema = new Schema({
         pincode: {
             type: Number,
         },
-        block: {
+        street: {
             type: String,
         },
     },
     password: {
         type: String,
+        minLength: [6, "Password must be atleast 6 characters long"],
         required: [true, "Password is required"]
     },
     role: {
@@ -56,6 +70,11 @@ userSchema.pre('save', async function(next) {
     if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 10);
     }
+    next();
+});
+
+userSchema.pre(['updateOne', 'findOneAndUpdate', 'update'], function (next) {
+    this.set({ updatedOn: new Date() });
     next();
 });
 module.exports = model('User', userSchema);

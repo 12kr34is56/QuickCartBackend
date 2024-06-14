@@ -4,11 +4,12 @@ const cartController = {
     fetchCart: async function (req, res) {
         try {
             const userID = req.params.userID;
-            const foundData = await CartModel.findOne({ userID }).populate("items.productID");
+            // const foundData = await CartModel.findOne({ userID }).populate("items.productID");
+            const foundData = await CartModel.findOne({ userID });
             if (!foundData) {
                 return res.json({ status: true, data: [] });
             }
-            return res.json({ status: true, data: foundData.items });
+            return res.json({ status: true, data: foundData });
 
         } catch (e) {
             return res.json({ status: false, message: e });
@@ -18,7 +19,9 @@ const cartController = {
 
     createCart: async function (req, res) {
         try {
-            const { userID, productID, quantity } = req.body;
+            const {userID} = req.params;
+            const { productID, quantity } = req.body;
+            
             //check if cart exist
             const foundCart = await CartModel.findOne({ userID });
             //if not exist

@@ -21,11 +21,11 @@ mongoose.connect(process.env.MONGO_URL)
     console.log("Error: ", e);
 });
 
-
 app.use("/api/product", ProductRoutes);
 app.use("/api/user", UserRoutes);
 app.use("/api/category", CategoryRoutes);
-
+const CartRoutes = require("./routes/cart_route");
+app.use("/api/cart", CartRoutes);
 app.get("/", function (req, res) {
     res.send("Server is workinng all fine");
 });

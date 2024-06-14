@@ -30,9 +30,6 @@ app.get("/", function (req, res) {
     res.send("Server is workinng all fine");
 });
 
-const CartRouter = require("./routes/cart_route");
-app.use("/api/cart", CartRouter);
-
 app.listen(PORT, function () {
     console.log(`Server started at: http://localhost:${PORT}`);
 });

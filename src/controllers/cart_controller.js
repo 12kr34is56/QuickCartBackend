@@ -38,6 +38,11 @@ const cartController = {
             }
 
             //if cart exist --> then find the user is same then update
+            const ifProductExist = await CartModel.find({userID, "items.productID": productID});
+            if (ifProductExist) {
+                console.log("Product already exist in cart");
+                return res.json({ status: false, message: "Product already exist in cart" });
+            }
             const updatedCart = await CartModel.findOneAndUpdate(
                 { userID },
                 { $push: { items: { productID, quantity: quantity } } },
@@ -53,8 +58,8 @@ const cartController = {
 
     removeCart: async function (req, res) {
         try {
-
-            const { userID, productID } = req.body;
+            const { userID } = req.params;
+            const { productID } = req.body;
             const updateCart = await CartModel.findOneAndUpdate(
                 { userID },
                 { $pull: { items: { productID } } },
@@ -67,7 +72,6 @@ const cartController = {
         }
 
     }
-
 };
 
 module.exports = cartController;

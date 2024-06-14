@@ -1,12 +1,10 @@
 const CartModel = require('./../models/cart_model');
 
 const cartController = {
-
-
     fetchCart: async function (req, res) {
         try {
-            const user = req.params.user;
-            const foundData = await CartModel.findOne({ user: user }).populate("items.product");
+            const userID = req.params.userID;
+            const foundData = await CartModel.findOne({ userID }).populate("items.productID");
             if (!foundData) {
                 return res.json({ status: true, data: [] });
             }
@@ -20,15 +18,15 @@ const cartController = {
 
     createCart: async function (req, res) {
         try {
-            const { user, product, quantity } = req.body;
+            const { userID, productID, quantity } = req.body;
             //check if cart exist
-            const foundCart = await CartModel.findOne({ user: user });
+            const foundCart = await CartModel.findOne({ userID });
             //if not exist
             if (!foundCart) {
                 //then we will create one by user id
-                const newCart = new CartModel({ user: user });
+                const newCart = new CartModel({ userID });
                 newCart.items.push({
-                    product: product,
+                    productID,
                     quantity: quantity
                 });
                 //now save the data
@@ -36,19 +34,12 @@ const cartController = {
                 return res.json({ status: true, data: newCart, message: "Cart created" });
             }
 
-            //if cart exist and product too --> then find the user and product is same then update
-            await CartModel.findOneAndUpdate(
-                { user: user, "items.product": product },
-                { $pull: { items: { product: product } } },
-                { new: true }
-            );
-
             //if cart exist --> then find the user is same then update
             const updatedCart = await CartModel.findOneAndUpdate(
-                { user: user },
-                { $push: { items: { product: product, quantity: quantity } } },
+                { userID },
+                { $push: { items: { productID, quantity: quantity } } },
                 { new: true }
-            ).populate("items.product");
+            ).populate("items.productID");
 
             return res.json({ status: true, data: updatedCart.items, message: "Cart Item added" });
 
@@ -60,12 +51,12 @@ const cartController = {
     removeCart: async function (req, res) {
         try {
 
-            const { user, product } = req.body;
+            const { userID, productID } = req.body;
             const updateCart = await CartModel.findOneAndUpdate(
-                { user: user },
-                { $pull: { items: { product: product } } },
+                { userID },
+                { $pull: { items: { productID } } },
                 { new: true }
-            ).populate("items.product");
+            ).populate("items.productID");
             return res.json({ status: true, data: updateCart.items, message: "Cart Item remove" });
 
         } catch (e) {

@@ -3,15 +3,14 @@ const { Schema, model } = require("mongoose");
 
 const cartItemSchema = new Schema({
 
-    product: { type: Schema.Types.ObjectId, ref: "Product" },
+    productID: { type: Schema.Types.ObjectId, ref: "Product" },
     quantity: { type: Number, default: 1 }
 
 });
 
 const cartSchema = new Schema({
 
-    //mainly we need user details , created on and updated on feature
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    userID: { type: Schema.Types.ObjectId, ref: "User", required: true },
     items: { type: [cartItemSchema], default: [] },
     createdOn: { type: Date },
     updatedOn: { type: Date },

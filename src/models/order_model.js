@@ -2,15 +2,15 @@ const { Schema, model } = require("mongoose");
 
 // Order Item Schema
 const orderItemSchema = new Schema({
-    product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+    product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },//convert into map
     quantity: { type: Number, default: 1 }
 });
 
 // Order Schema
 const orderSchema = new Schema({
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },//convert into map
     items: { type: [orderItemSchema], default: [] },
-    orderStatus: { type: String },
+    orderStatus: { type: String },//change it into enum
     createdOn: { type: Date },
     updatedOn: { type: Date }
 });

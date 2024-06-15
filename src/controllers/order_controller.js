@@ -13,6 +13,7 @@ const OrderController = {
             });
 
             await newOrder.save();
+            //it should be removed from cart list
             await cartModel.findOneAndDelete({ user: user._id });
 
             return res.json({ status: true, data: newOrder, message: "Order created" });
@@ -27,8 +28,7 @@ const OrderController = {
             const userId = req.params.userId;
             const foundData = await orderModel.find({
                 user: userId
-            }).populate("user")
-                .populate("items.product");
+            });
             return res.json({ status: true, data: foundData });
         } catch (e) {
             return res.json({ status: false, message: e.message });

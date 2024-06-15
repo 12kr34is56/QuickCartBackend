@@ -43,8 +43,7 @@ const cartController = {
                 console.log("Product already exist in cart");
                 return res.json({ status: false, message: "Product already exist in cart" });
             }
-            //shouldn't it return the true instead of false? as it give result and we use false if thier is error in result
-            const updatedCart = await CartModel.findOneAndUpdate(
+             const updatedCart = await CartModel.findOneAndUpdate(
                 { userID },
                 { $push: { items: { productID, quantity: quantity } } },
                 { new: true }

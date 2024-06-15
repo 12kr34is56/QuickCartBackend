@@ -2,36 +2,32 @@ const cartModel = require('../models/cart_model');
 const orderModel = require('./../models/order_model');
 
 const OrderController = {
-    // Create Order
     createOrder: async function (req, res) {
         try {
             const { user, items, orderStatus } = req.body;
             const newOrder = new orderModel({
-                user: user._id,
+                user: user,
                 items: items,
                 orderStatus: orderStatus
             });
 
             await newOrder.save();
-            //it should be removed from cart list
-            await cartModel.findOneAndDelete({ user: user._id });
+            await cartModel.findOneAndDelete({ user: user._id }, { items: [] }, { new: true });
 
             return res.json({ status: true, data: newOrder, message: "Order created" });
         } catch (e) {
-            return res.json({ status: false, message: e.message });
+            return res.json({ status: true, message: e });
         }
     },
-
-    // Fetch Order by User ID
     fetchOrderById: async function (req, res) {
         try {
             const userId = req.params.userId;
             const foundData = await orderModel.find({
-                user: userId
+                "user._id": userId,
             });
             return res.json({ status: true, data: foundData });
         } catch (e) {
-            return res.json({ status: false, message: e.message });
+            return res.json({ status: true, message: e });
         }
     },
     updateOrderStatus: async function (req, res) {
